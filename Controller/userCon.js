@@ -34,7 +34,6 @@ let homeCon=[
 
 let nlHome= async (req, res)=>{
     await postMod.find({}, { user_id:0, _id:0 }).then((result)=>{
-        console.log(err, result)
         res.json({"result":result, "user":"not"})
     })
 }
@@ -81,7 +80,7 @@ let login=[
 
     (req, res)=>{
         console.log(req.user)
-        res.json({ "token":jwt.sign({ user:req.user }, 'SECRET_KEY'), "status":"success" })
+        res.json({ "token":jwt.sign({ user:req.user }, 'SECRET_KEY') })
     }
 ]
 
