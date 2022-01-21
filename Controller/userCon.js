@@ -41,7 +41,7 @@ let nlHome= async (req, res)=>{
 let register=[
     async (req, res, next)=>{
         await userMod.find({username:req.body.username}).then((result)=>{
-            if(result.length) res.send('Username Already Exists!!!')
+            if(result.length) res.json({"error":[{"msg":'Username Already Exists!!!'}]})
             else next();
         })
     },
@@ -59,7 +59,7 @@ let register=[
         const errors=validationResult(req);
 
         if(!errors.isEmpty()){
-            return res.json({errors:errors.array()})
+            return res.json({error:errors.array()})
         }
 
         userMod.insertMany([
