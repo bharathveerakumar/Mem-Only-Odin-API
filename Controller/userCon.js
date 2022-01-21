@@ -79,7 +79,6 @@ let login=[
     passport.authenticate('local', {session:false}), 
 
     (req, res)=>{
-        console.log(req.user)
         res.json({ "token":jwt.sign({ user:req.user }, 'SECRET_KEY') })
     }
 ]
