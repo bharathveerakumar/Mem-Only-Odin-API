@@ -7,7 +7,7 @@ const users=require('./model/user');
 passport.use(new localPass(async (username, password, done)=>{ 
 
     let user=[];
-    await users.find({username:username}, { _id:0, date:0, _v:0 }).then((data)=>{
+    await users.find({username:username}, { date:0, _v:0 }).then((data)=>{
         if(data.length){
             if(data[0].username==username&&data[0].password==password) user=data;
         }

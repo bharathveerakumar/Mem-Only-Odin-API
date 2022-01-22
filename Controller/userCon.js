@@ -15,7 +15,7 @@ let homeCon=[
             {
                 $lookup:{
                     from:"users",
-                    localField:"user_id",
+                    localField:"_id",
                     foreignField:"_id",
                     as:"user_info"
                 }
@@ -70,7 +70,7 @@ let register=[
                 logo:req.body.logo,
             }
         ]);
-        res.json({"status":"success"})
+        res.json({"error":"success"})
     }
 ]
 
