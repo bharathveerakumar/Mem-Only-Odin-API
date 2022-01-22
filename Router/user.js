@@ -9,5 +9,6 @@ app.get('/', userCon.homeCon)
 app.get('/home', userCon.nlHome)
 app.post('/login', userCon.login)
 app.post('/register', userCon.register)
+app.post('/member', userCon.member)
 
 module.exports=app
