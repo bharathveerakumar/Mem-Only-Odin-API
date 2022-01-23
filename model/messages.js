@@ -2,7 +2,7 @@ const mongoose=require('mongoose')
 const {Schema}=require('mongoose')
 
 const Messages=new Schema({
-    user_id:String,
+    user_id:mongoose.SchemaTypes.ObjectId,
     title:String,
     body:String,
     date:{

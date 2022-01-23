@@ -5,6 +5,7 @@ const session=require('express-session')
 const passport=require('passport')
 const cors=require('cors')
 const bodyParser=require('body-parser')
+const cookieParser=require('cookie-parser')
 const app=express();
 
 
@@ -26,16 +27,15 @@ app.use(session({
     secret:'bharath',
     saveUninitialized:true,
     resave:true,
-    cookie:{
-        maxAge:20000
-    }
 }))
 app.use(passport.initialize());
 app.use(multer().single('images'))
 app.use(cors({
-    origin:'http://127.0.0.1:5500'
+    origin:true,
+    credentials:true
 }))
 app.use(bodyParser.json())
+app.use(cookieParser())
 
 
 //Routing

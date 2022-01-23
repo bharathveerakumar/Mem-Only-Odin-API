@@ -7,7 +7,7 @@ const postMess=[
         await msgMod.insertMany([{
             title:req.body.title,
             body:req.body.body,
-            user_id:req.user._id
+            user_id:req.user.user[0]._id
         }])
         res.json({"error":"success"})
     }

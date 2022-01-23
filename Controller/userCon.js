@@ -25,7 +25,7 @@ let homeCon=[
                 $project:{ _id:0, user_info:{ _id:0, username:0, password:0, logo:0, status:0 } }
             },
             {
-                $sort:{ date:1 }
+                $sort:{ date:-1 }
             }
         ]).then((result)=>{
             res.json({ "result":result, "user":req.user })
@@ -60,14 +60,14 @@ let register=[
 
     }).withMessage('Password should Match'),
 
-    (req, res)=>{
+    async (req, res)=>{
         const errors=validationResult(req);
 
         if(!errors.isEmpty()){
             return res.json({error:errors.array()})
         }
 
-        userMod.insertMany([
+        await userMod.insertMany([
             {
                 username:req.body.username,
                 password:req.body.password,
@@ -100,9 +100,7 @@ let member=[
             await userMod.updateOne({username:req.user.user[0].username}, { $set:{ status:"MEMBER" } })
             await userMod.find({username:req.user.user[0].username}, { __v:0, date:0 }, (err, cb)=>{
                 const token=jwt.sign({user:cb}, 'SECRET_KEY'); 
-                res.headers('Set-Cookie', `token=${token}`)
-                res.cookie('tokenn', token, { maxAge:900000, httpOnly:false })
-                res.json({"error":"success", "user":cb})
+                res.json({"error":"success", "user":cb, "token":token})
             })
         }
         else res.json({"error":"failed", "user":req.user})  
