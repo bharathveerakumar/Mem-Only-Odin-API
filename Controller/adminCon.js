@@ -10,11 +10,10 @@ const adminView=[
     authorization,
 
     async (req, res)=>{
-        console.log(1)
         await userMod.aggregate([
             {
                 $lookup:{
-                    from:'messages',
+                    from: 'messages',
                     localField:'_id',
                     foreignField:'user_id',
                     as:'posts'
@@ -47,7 +46,7 @@ const adminUpdate=[
 ]
 
 
-
+//For authorizing Whether the User is an ADMIN or not...
 function authorization(req, res, next){
     console.log(req.user)
     if(req.user.status==='IN') next();
