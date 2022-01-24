@@ -9,7 +9,7 @@ const postMod=require('../model/messages')
 
 //getting content for home page according to the user roles...
 let homeCon=[
-    passport.authenticate('jwt', {session:false, failureRedirect:'/home'}),
+    passport.authenticate('withUser', {session:false, failureRedirect:'/home'}),
     
     async (req, res)=>{
         await postMod.aggregate([
@@ -85,7 +85,7 @@ let login=[
     passport.authenticate('local', {session:false}), 
 
     (req, res)=>{
-        const token=jwt.sign({ user:req.user }, 'SECRET_KEY')
+        const token=jwt.sign({ user:req.user[0]._id }, 'SECRET_KEY')
         res.json({ "token": token })
     }
 ]
@@ -93,13 +93,13 @@ let login=[
 
 //For Membership Update
 let member=[
-    passport.authenticate('jwt', { session:false, failureRedirect:'/home' }),
+    passport.authenticate('withUser', { session:false, failureRedirect:'/home' }),
 
     async (req, res)=>{
         if(req.body.member=='member'){
             await userMod.updateOne({username:req.user.user[0].username}, { $set:{ status:"MEMBER" } })
-            await userMod.find({username:req.user.user[0].username}, { __v:0, date:0 }, (err, cb)=>{
-                const token=jwt.sign({user:cb}, 'SECRET_KEY'); 
+            await userMod.findOne({username:req.user.user[0].username}, { __v:0, date:0 }, (err, cb)=>{
+                const token=jwt.sign({user:cb._id}, 'SECRET_KEY'); 
                 res.json({"error":"success", "user":cb, "token":token})
             })
         }

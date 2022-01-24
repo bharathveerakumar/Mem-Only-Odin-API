@@ -5,7 +5,6 @@ const users=require('./model/user');
 
 
 passport.use(new localPass(async (username, password, done)=>{ 
-
     let user=[];
     await users.find({username:username}, { date:0, _v:0 }).then((data)=>{
         if(data.length){
@@ -17,13 +16,24 @@ passport.use(new localPass(async (username, password, done)=>{
 }))
 
 
-passport.use(new jwtStart({
+passport.use('withoutUser', new jwtStart({
         jwtFromRequest:tokene,
         secretOrKey:'SECRET_KEY'
     }, async (payload, done)=>{
         return done(null, payload);
     }
 ))
+
+passport.use('withUser', new jwtStart({
+    jwtFromRequest:tokene,
+    secretOrKey:'SECRET_KEY'
+}, async (payload, done)=>{
+    let user;
+    await users.findOne({_id:payload.user}).then((result)=>{
+        user=result;
+    })
+    return done(null, user)
+}))
 
 
 function tokene(req, res){

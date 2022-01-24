@@ -1,5 +1,6 @@
 const express=require('express')
 const userCon=require('../Controller/userCon')
+const adminCon=require('../Controller/adminCon')
 
 
 const app=express()
@@ -10,5 +11,7 @@ app.get('/home', userCon.nlHome)
 app.post('/login', userCon.login)
 app.post('/register', userCon.register)
 app.post('/member', userCon.member)
+app.get('/admin', adminCon.adminView)
+app.post('/update', adminCon.adminUpdate)
 
 module.exports=app
