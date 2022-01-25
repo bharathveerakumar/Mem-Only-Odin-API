@@ -21,9 +21,10 @@ const adminView=[
             },
             {
                 $project:{
+                    // _id:0,
                     nickname:1,
                     posts:{
-                        title:1, body:1, _id:1, data:1
+                        _id:1, title:1, body:1, date:1
                     }
                 }
             }
@@ -37,7 +38,7 @@ const adminView=[
 const adminUpdate=[
     passport.authenticate('withoutUser', { session:false, failureRedirect:'/home' }),
     async (req, res)=>{
-        await postMod.findOneAndUpdate({_id:'61ed39aeb4f2940e813b45db'}, { $set:{ body:req.body.body } })
+        await postMod.findOneAndUpdate({_id:req.body._id}, { $set:{ title:req.body.title, body:req.body.body } })
         .catch((e)=>{
             res.json({"success":false}); res.end();
         })
@@ -45,13 +46,20 @@ const adminUpdate=[
     }
 ]
 
+const adminDelete=[
+    passport.authenticate('withoutUser', { session:false, failureRedirect:'/home' }),
+    async (req, res)=>{
+        await postMod.deleteOne({_id:req.body._id})
+        .catch((e)=>res.status(404))
+        res.json({"success":true})
+    }
+]
 
 //For authorizing Whether the User is an ADMIN or not...
 function authorization(req, res, next){
-    console.log(req.user)
     if(req.user.status==='IN') next();
     else res.json({"error":"failed"})
 }
 
 
-module.exports={ adminView, adminUpdate }
+module.exports={ adminView, adminUpdate, adminDelete }
