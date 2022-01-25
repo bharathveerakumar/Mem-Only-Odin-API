@@ -14,5 +14,6 @@ app.post('/member', userCon.member)
 app.get('/admin', adminCon.adminView)
 app.post('/update', adminCon.adminUpdate)
 app.post('/delete', adminCon.adminDelete)
+app.post('/adminLogin', userCon.admin)
 
 module.exports=app

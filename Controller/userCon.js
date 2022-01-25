@@ -97,10 +97,10 @@ let member=[
 
     async (req, res)=>{
         if(req.body.member=='member'){
-            await userMod.updateOne({username:req.user.user[0].username}, { $set:{ status:"MEMBER" } })
-            await userMod.findOne({username:req.user.user[0].username}, { __v:0, date:0 }, (err, cb)=>{
-                const token=jwt.sign({user:cb._id}, 'SECRET_KEY'); 
-                res.json({"error":"success", "user":cb, "token":token})
+            await userMod.findOneAndUpdate({_id:req.user._id}, { $set:{ status:"MEMBER" } })
+            .then((res1)=>{
+                res1.status="MEMBER";
+                res.json({"error":true, "user":res1})
             })
         }
         else res.json({"error":"failed", "user":req.user})  
@@ -108,4 +108,19 @@ let member=[
 ]
 
 
-module.exports = { homeCon, register, login, nlHome, member }
+let admin=[
+    passport.authenticate('withUser', { session:false, failureRedirect:'/home' }),
+
+    async (req, res)=>{
+        if(req.body.admin=='admin'){
+            await userMod.findOneAndUpdate({_id:req.user._id}, { $set:{ status:"admin" } })
+            .then((res1)=>{
+                res1.status="admin";
+                res.json({"error":true, "user":res1})
+            })
+        }
+        else res.json({"error":false, "user":req.user})
+    }
+]
+
+module.exports = { homeCon, register, login, nlHome, member, admin }
