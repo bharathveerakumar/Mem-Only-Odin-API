@@ -28,7 +28,7 @@ const adminView=[
                 }
             }
         ]).then((result)=>{
-            res.json({ "result":result, "user":req.user })
+            res.json({ "result":result, "user":req.user, "error":true })
         })
     }
 ]
@@ -63,8 +63,8 @@ const adminDelete=[
 
 //For authorizing Whether the User is an ADMIN or not...
 function authorization(req, res, next){
-    if(req.user.status==='admin') next();
-    else res.json({"error":"failed"})
+    if(req.user.status==='ADMIN') next();
+    else res.json({"error":false})
 }
 
 

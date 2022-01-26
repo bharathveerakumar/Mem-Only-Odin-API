@@ -94,6 +94,8 @@ let login=[
 //For Membership Update
 let member=[
     passport.authenticate('withUser', { session:false, failureRedirect:'/home' }),
+    
+    memberShipCheck,
 
     async (req, res)=>{
         if(req.body.member=='member'){
@@ -103,24 +105,42 @@ let member=[
                 res.json({"error":true, "user":res1})
             })
         }
-        else res.json({"error":"failed", "user":req.user})  
+        else res.json({"error":false, "user":req.user})  
     }
 ]
 
 
 let admin=[
     passport.authenticate('withUser', { session:false, failureRedirect:'/home' }),
+    
+    adminShipCheck,
 
     async (req, res)=>{
-        if(req.body.admin=='admin'){
-            await userMod.findOneAndUpdate({_id:req.user._id}, { $set:{ status:"admin" } })
+        if(req.body.admin=='ADMIN'){
+            await userMod.findOneAndUpdate({_id:req.user._id}, { $set:{ status:"ADMIN" } })
             .then((res1)=>{
-                res1.status="admin";
+                res1.status="ADMIN";
                 res.json({"error":true, "user":res1})
             })
         }
         else res.json({"error":false, "user":req.user})
     }
 ]
+
+
+function adminShipCheck(req, res, next){
+    if(req.user.status=='ADMIN'){
+        res.json({"error":"You're already an admin"}).end();
+    }
+    else next();
+}
+
+function memberShipCheck(req, res, next){
+    if(req.user.status=='MEMBER'){
+        res.json({"error":"You're already an Member"}).end();
+    }
+    else next();
+}
+
 
 module.exports = { homeCon, register, login, nlHome, member, admin }
