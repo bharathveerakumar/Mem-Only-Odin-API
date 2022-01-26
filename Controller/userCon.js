@@ -98,7 +98,7 @@ let member=[
     memberShipCheck,
 
     async (req, res)=>{
-        if(req.body.member=='member'){
+        if(req.body.member=='MEMBER'){
             await userMod.findOneAndUpdate({_id:req.user._id}, { $set:{ status:"MEMBER" } })
             .then((res1)=>{
                 res1.status="MEMBER";
