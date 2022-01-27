@@ -22,7 +22,7 @@ let homeCon=[
                 }
             },
             {
-                $project:{ _id:0, user_info:{ _id:0, username:0, password:0, logo:0, status:0 } }
+                $project:{ _id:0, user_info:{ _id:0, username:0, password:0, status:0 } }
             },
             {
                 $sort:{ date:-1 }
