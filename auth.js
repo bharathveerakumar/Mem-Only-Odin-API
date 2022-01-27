@@ -3,6 +3,7 @@ const localPass=require('passport-local').Strategy
 const jwtStart=require('passport-jwt').Strategy
 const users=require('./model/user');
 
+require('dotenv').config()
 
 passport.use(new localPass(async (username, password, done)=>{ 
     let user=[];
@@ -18,7 +19,7 @@ passport.use(new localPass(async (username, password, done)=>{
 
 passport.use('withoutUser', new jwtStart({
         jwtFromRequest:tokene,
-        secretOrKey:'SECRET_KEY'
+        secretOrKey:`${process.env.TOKEN_SECRET}`
     }, async (payload, done)=>{
         return done(null, payload);
     }
@@ -26,7 +27,7 @@ passport.use('withoutUser', new jwtStart({
 
 passport.use('withUser', new jwtStart({
     jwtFromRequest:tokene,
-    secretOrKey:'SECRET_KEY'
+    secretOrKey:`${process.env.TOKEN_SECRET}`
 }, async (payload, done)=>{
     let user;
     await users.findOne({_id:payload.user}).then((result)=>{

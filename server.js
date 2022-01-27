@@ -11,13 +11,13 @@ const app=express();
 
 //Own Module
 require('./auth');
-require('./db')
+require('./db');
 const userRoute=require('./Router/user')
 const postRoute=require('./Router/posts')
 
 
 // Porting
-app.listen(5000, ()=>{
+app.listen(process.env.PORT||5000, ()=>{
     console.log('Listening');
 })
 

@@ -2,7 +2,7 @@ const passport=require("passport")
 const jwt=require('jsonwebtoken')
 const { body, validationResult }=require('express-validator')
 
-
+require('dotenv').config()
 const userMod=require('../model/user')
 const postMod=require('../model/messages')
 
@@ -85,7 +85,7 @@ let login=[
     passport.authenticate('local', {session:false}), 
 
     (req, res)=>{
-        const token=jwt.sign({ user:req.user[0]._id }, 'SECRET_KEY')
+        const token=jwt.sign({ user:req.user[0]._id }, `${process.env.TOKEN_SECRET}`)
         res.json({ "token": token })
     }
 ]
