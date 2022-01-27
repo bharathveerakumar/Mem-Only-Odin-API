@@ -22,6 +22,7 @@ const adminView=[
                 $project:{
                     _id:0,
                     nickname:1,
+                    logo:1,
                     posts:{
                         _id:1, title:1, body:1, date:1
                     }
